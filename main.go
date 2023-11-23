@@ -48,7 +48,11 @@ func main() {
 		fmt.Println("How many tickets would you like to purchase? ")
 		fmt.Scan(&userTickets)
 
-		if userTickets <= remainingTickets {
+		var isValidName bool = len(firstName) >= 2 && len(lastName) >= 2
+		var isValidEmail bool = strings.Contains(email, "@")
+		var isValidTicketNumber bool = userTickets > 0 && userTickets <= remainingTickets
+
+		if isValidName && isValidEmail && isValidTicketNumber {
 			// update ticket information
 			remainingTickets = remainingTickets - userTickets
 			// bookings[0] = firstName + " " + lastName
@@ -73,7 +77,18 @@ func main() {
 				break
 			}
 		} else {
-			fmt.Printf("There are only %v remaining, so you cannot book %v tickets.\n", remainingTickets, userTickets)
+			if !isValidName {
+				fmt.Println("Your first or last name is invalid. The first name field requires 2 or more characters. The last name field requires 2 or more characters.")
+			}
+			if !isValidEmail {
+				fmt.Println(("Your email address is invalid. The email address field requires an @ symbol."))
+			}
+			if !isValidTicketNumber {
+				fmt.Println("The entered number of tickets is invalid. The number of tickets must be greater than zero and less than or equal to the total number of remaining tickets.")
+				fmt.Printf("There are %v tickets remaining.\n", remainingTickets)
+			}
+
+			fmt.Println("Please try again!")
 		}
 	}
 }

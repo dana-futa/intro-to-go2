@@ -33,14 +33,14 @@ func main() {
 				fmt.Println("Your first or last name is invalid. The first name field requires 2 or more characters. The last name field requires 2 or more characters.")
 			}
 			if !isValidEmail {
-				fmt.Println(("Your email address is invalid. The email address field requires an @ symbol."))
+				fmt.Println("Your email address is invalid. The email address field requires an @ symbol.")
 			}
 			if !isValidTicketNumber {
 				fmt.Println("The entered number of tickets is invalid. The number of tickets must be greater than zero and less than or equal to the total number of remaining tickets.")
-				fmt.Printf("There are %v tickets remaining.\n", remainingTickets)
+				// fmt.Printf("There are %v tickets remaining.", remainingTickets)
 			}
 
-			fmt.Println("Please try again!")
+			// fmt.Printf("Please try again!")
 		}
 	}
 }
@@ -74,13 +74,6 @@ func getUserInput() (string, string, string, uint) {
 	fmt.Scan(&userTickets)
 
 	return firstName, lastName, email, userTickets
-}
-
-func validateUserInput(firstName string, lastName string, email string, userTickets uint) (bool, bool, bool) {
-	isValidName := len(firstName) >= 2 && len(lastName) >= 2
-	isValidEmail := strings.Contains(email, "@")
-	isValidTicketNumber := userTickets > 0 && userTickets <= remainingTickets
-	return isValidName, isValidEmail, isValidTicketNumber
 }
 
 func bookTicket(firstName string, lastName string, email string, userTickets uint) {

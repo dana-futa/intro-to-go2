@@ -4,9 +4,9 @@ import "strings"
 
 // other good file names include: helper.go or shared.go
 
-func validateUserInput(firstName string, lastName string, email string, userTickets uint) (bool, bool, bool) {
-	isValidName := len(firstName) >= 2 && len(lastName) >= 2
-	isValidEmail := strings.Contains(email, "@")
-	isValidTicketNumber := userTickets > 0 && userTickets <= remainingTickets
+func validateUserInput(userData UserData) (bool, bool, bool) {
+	isValidName := len(userData.firstName) >= 2 && len(userData.lastName) >= 2
+	isValidEmail := strings.Contains(userData.email, "@")
+	isValidTicketNumber := userData.tickets > 0 && userData.tickets <= remainingTickets
 	return isValidName, isValidEmail, isValidTicketNumber
 }

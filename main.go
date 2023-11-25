@@ -1,26 +1,30 @@
 package main
 
-import (
-	"fmt"
-	"strings"
-)
+import "fmt"
+
+type UserData struct {
+	firstName string
+	lastName  string
+	email     string
+	tickets   uint
+}
 
 const conferenceName string = "Go Conference"
 const conferenceTickets int = 50
 
 var remainingTickets uint = 50
-var bookings []string = []string{}
+var bookings []UserData = make([]UserData, 0)
 
 func main() {
 
 	greetUsers()
 
 	for {
-		firstName, lastName, email, userTickets := getUserInput()
-		isValidName, isValidEmail, isValidTicketNumber := validateUserInput(firstName, lastName, email, userTickets)
+		userData := getUserInput()
+		isValidName, isValidEmail, isValidTicketNumber := validateUserInput(userData)
 
 		if isValidName && isValidEmail && isValidTicketNumber {
-			bookTicket(firstName, lastName, email, userTickets)
+			bookTicket(userData)
 			printFirstNames()
 
 			// end program
@@ -37,10 +41,7 @@ func main() {
 			}
 			if !isValidTicketNumber {
 				fmt.Println("The entered number of tickets is invalid. The number of tickets must be greater than zero and less than or equal to the total number of remaining tickets.")
-				// fmt.Printf("There are %v tickets remaining.", remainingTickets)
 			}
-
-			// fmt.Printf("Please try again!")
 		}
 	}
 }
@@ -51,46 +52,47 @@ func greetUsers() {
 	fmt.Println("Get your tickets here to attend!")
 }
 
-func getUserInput() (string, string, string, uint) {
-	var firstName string
-	var lastName string
-	var email string
-	var userTickets uint
+func getUserInput() UserData {
+	var userData = UserData{}
 
 	// ask user for first name
 	fmt.Println("Please enter your first name: ")
-	fmt.Scan(&firstName)
+	fmt.Scan(&userData.firstName)
 
 	// ask user for last name
 	fmt.Println("Please enter your last name: ")
-	fmt.Scan(&lastName)
+	fmt.Scan(&userData.lastName)
 
 	// ask user for email
 	fmt.Println("Please enter your email address: ")
-	fmt.Scan(&email)
+	fmt.Scan(&userData.email)
 
 	// ask user for number of tickets
 	fmt.Println("How many tickets would you like to purchase? ")
-	fmt.Scan(&userTickets)
+	fmt.Scan(&userData.tickets)
 
-	return firstName, lastName, email, userTickets
+	return userData
 }
 
-func bookTicket(firstName string, lastName string, email string, userTickets uint) {
-	// update ticket information
-	remainingTickets = remainingTickets - userTickets
-	bookings = append(bookings, firstName+" "+lastName)
+func bookTicket(userData UserData) {
+	remainingTickets = remainingTickets - userData.tickets
+	bookings = append(bookings, userData)
 
 	// Thank you message
-	fmt.Printf("Thank you %v %v for purchasing %v tickets. You will receive a confirmation email at %v.\n", firstName, lastName, userTickets, email)
+	fmt.Printf("Thank you %v %v for purchasing %v tickets. You will receive a confirmation email at %v.\n",
+		userData.firstName, userData.lastName, userData.tickets, userData.email)
 	fmt.Printf("%v are remaining for the %v.\n", remainingTickets, conferenceName)
 }
 
 func printFirstNames() {
-	firstNames := []string{}
-	for _, booking := range bookings {
-		var names = strings.Fields(booking)
-		firstNames = append(firstNames, names[0])
+	fmt.Printf("The first names of our bookings are: ")
+
+	for index, booking := range bookings {
+		fmt.Printf("%v", booking.firstName)
+		if index < len(bookings)-1 {
+			fmt.Printf(", ")
+		}
 	}
-	fmt.Printf("The first names of our bookings are %v.\n", firstNames)
+
+	fmt.Printf("\n")
 }
